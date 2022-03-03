@@ -1,0 +1,124 @@
+<!-- https://forum.primefaces.org/viewtopic.php?t=66479 -->
+<!-- https://therichpost.com/angular-11-primeng-expand-collapse-data-table-row-working-demo/ -->
+
+<div class="card">
+  <p-table
+    #dt1
+    [value]="items"
+    dataKey="id"
+    styleClass="p-datatable-items p-datatable-gridlines"
+    [globalFilterFields]="['name']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <button
+          pButton
+          label="Clear"
+          class="p-button-outlined"
+          icon="pi pi-filter-slash"
+          (click)="clear(dt1)"
+        ></button>
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="applyFilterGlobal(dt1, $event, 'contains')"
+            placeholder="Search keyword"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5rem"></th>
+        <th pSortableColumn="name">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Name
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter
+              type="text"
+              field="name"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-expanded="expanded">
+      <tr>
+        <td>
+          <button
+            type="button"
+            pButton
+            pRipple
+            [pRowToggler]="item"
+            class="p-button-text p-button-rounded p-button-plain"
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+          ></button>
+        </td>
+        <td>
+          {{ item.name }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-item>
+      <tr>
+        <td colspan="4">
+          <div class="p-p-3">
+            <p-table [value]="item.chapters" dataKey="id">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="name">
+                    Chapter<p-sortIcon field="chapters"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-chapter>
+                <tr>
+                  <td>{{ chapter.name }}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr cl>
+                  <td class="p-text-center" colspan="3">
+                    There are no data for this user yet.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- <p-table [value]="items">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let column of tableColumns">
+        {{ column.header }}
+      </th>
+    </tr>
+    <tr>
+      <th *ngFor="let column of tableColumns">
+        <p-columnFilter
+          type="text"
+          field="name"
+          display="menu"
+          [showAddButton]="false"
+          class="p-ml-auto"
+        ></p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-item let-columns="columns">
+    <tr>
+      <td *ngFor="let column of tableColumns">
+        {{ item[column.field] }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table> -->
